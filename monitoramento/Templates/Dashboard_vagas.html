@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Dashboard de Vagas</title>
+<style>
+    .vaga {
+        width: 90px;
+        padding: 10px;
+        margin: 5px;
+        display: inline-block;
+        text-align: center;
+        border-radius: 8px;
+        font-size: 18px;
+        font-weight: bold;
+        color: white;
+    }
+    .livre { background: green; }
+    .ocupada { background: red; }
+</style>
+</head>
+<body>
+
+<h1>Vagas em Tempo Real</h1>
+
+<div id="vagas"></div>
+
+<script>
+// Abre conexão WebSocket
+const socket = new WebSocket("ws://127.0.0.1:8000/ws/vagas/");
+
+socket.onmessage = function(e) {
+    const data = JSON.parse(e.data);
+
+    const vagaId = data.vaga;
+    const ocupada = data.ocupado;
+
+    let div = document.getElementById(vagaId);
+
+    if (!div) {
+        // cria um novo box se não existir
+        div = document.createElement("div");
+        div.id = vagaId;
+        div.className = "vaga";
+        div.textContent = "Vaga " + vagaId;
+        document.getElementById("vagas").appendChild(div);
+    }
+
+    // Atualiza cor da vaga
+    div.className = ocupada ? "vaga ocupada" : "vaga livre";
+};
+</script>
+
+</body>
+</html>

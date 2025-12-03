@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Mapa de Vagas</title>
+    <h1> MAPS</h1>
+
+    <style>
+        body {
+            background: #111;
+            font-family: Arial;
+            color: white;
+        }
+
+        .setor-box {
+            background: white;
+            color: black;
+            margin: 25px auto;
+            width: 90%;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .setor-titulo {
+            background: black;
+            color: white;
+            padding: 8px 30px;
+            display: inline-block;
+            margin-bottom: 15px;
+            border-radius: 30px;
+            font-size: 20px;
+        }
+
+        .legenda {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 10px;
+        }
+
+        .legenda-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .circulo {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+        }
+
+        .livre { background: #4BE140; }
+        .ocupada { background: #FF2F2F; }
+
+        table {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        td {
+            padding: 8px;
+            font-size: 15px;
+        }
+
+        .vaga-linha {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px dashed #888;
+        }
+    </style>
+</head>
+<body>
+
+{% for setor, vagas in setores.items %}
+<div class="setor-box">
+
+    <div class="legenda">
+        <div class="legenda-item">
+            <div class="circulo livre"></div> Vagas disponíveis
+        </div>
+        <div class="legenda-item">
+            <div class="circulo ocupada"></div> Vagas ocupadas
+        </div>
+    </div>
+
+    <div class="setor-titulo">G1 - setor {{ setor }}</div>
+
+    <table>
+        {% for vaga in vagas %}
+        <tr>
+            <td>{{ vaga.numero|floatformat:"0" }}</td>
+            <td>
+                <div class="circulo {% if vaga.ocupada %}ocupada{% else %}livre{% endif %}"></div>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</div>
+{% endfor %}
+
+</body>
+<script>
+setInterval(() => {
+    location.reload()
+}, 2000);
+</script>
+</html>

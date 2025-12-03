@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Vagas no G1</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        .vaga {
+            width: 120px;
+            height: 120px;
+            border-radius: 10px;
+            display: inline-block;
+            margin: 10px;
+            text-align: center;
+            line-height: 120px;
+            font-weight: bold;
+            color: white;
+            font-size: 18px;
+        }
+
+        .livre {
+            background-color: green;
+        }
+
+        .ocupada {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Vagas - Setor A</h1>
+
+    <p>Status atual em tempo real:</p>
+
+    <div id="vagas"></div>
+
+    <script>
+        function carregarVagas() {
+            fetch("/api/vagas/")
+                .then(resp => resp.json())
+                .then(vagas => {
+                    let div = document.getElementById("vagas");
+                    div.innerHTML = "";
+
+                    vagas.forEach(v => {
+                        let bloco = document.createElement("div");
+                        bloco.className = "vaga " + (v.status ? "ocupada" : "livre");
+                        bloco.innerHTML = v.codigo;
+                        div.appendChild(bloco);
+                    });
+                });
+        }
+
+        carregarVagas();
+        setInterval(carregarVagas, 2000); // atualiza a cada 2s
+    </script>
+
+</body>
+</html>
